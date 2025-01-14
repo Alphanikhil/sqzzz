@@ -1,13 +1,18 @@
-// filepath: /c:/Users/BMSIT/Desktop/nikhil/client/src/components/QRCodeDisplay.jsx
 import React, { useEffect, useState } from 'react';
 
 const QRCodeDisplay = () => {
     const [qrCode, setQrCode] = useState('');
 
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:8080'); // Ensure the port matches the backend
+        const wsUrl = import.meta.env.VITE_API_URL.replace('http', 'ws'); // Convert http://localhost:8050 to ws://localhost:8050
+        const ws = new WebSocket(`${wsUrl.replace(/:8050$/, ':8080')}`); // Replace port to match WebSocket server port
+
+        ws.onopen = () => {
+            console.log('WebSocket connection opened');
+        };
 
         ws.onmessage = (event) => {
+            console.log('Received message:', event.data);
             setQrCode(event.data);
         };
 
@@ -23,6 +28,10 @@ const QRCodeDisplay = () => {
             ws.close();
         };
     }, []);
+
+    useEffect(() => {
+        console.log('QR Code state updated:', qrCode);
+    }, [qrCode]);
 
     return (
         <div>

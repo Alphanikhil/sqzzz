@@ -2,10 +2,6 @@ import qrcode from 'qrcode-terminal';
 import { Client } from 'whatsapp-web.js';
 import wss from './websocket.js'; // Import the WebSocket server
 
-import AddressModel from '../models/address.model.js'; // Import the address model
-import OrderModel from '../models/order.model.js'; // Import the order model
-import ProductModel from '../models/product.model.js'; // Import the product model
-
 const client = new Client();
 
 client.on('qr', (qr) => {
