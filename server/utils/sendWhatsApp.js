@@ -1,6 +1,7 @@
 import qrcode from 'qrcode-terminal';
 import { Client } from 'whatsapp-web.js';
-import wss from './websocket.js'; // Import the WebSocket server
+import { wss } from './websocket.js'; // Import the WebSocket server instance
+import OrderModel from '../models/order.model.js';
 
 const client = new Client();
 
@@ -9,11 +10,13 @@ client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 
     // Send the QR code to all connected clients
-    wss.clients.forEach((client) => {
-        if (client.readyState === client.OPEN) {
-            client.send(qr);
-        }
-    });
+    if (wss) {
+        wss.clients.forEach((client) => {
+            if (client.readyState === client.OPEN) {
+                client.send(qr);
+            }
+        });
+    }
 });
 
 client.on('ready', () => {
