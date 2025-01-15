@@ -14,7 +14,7 @@ import productRouter from './route/product.route.js';
 import cartRouter from './route/cart.route.js';
 import addressRouter from './route/address.route.js';
 import orderRouter from './route/order.route.js';
-import initializeWebSocket from './utils/websocket.js';
+import { initializeWebSocket } from './utils/websocket.js';
 import path from 'path';
 
 const app = express();
