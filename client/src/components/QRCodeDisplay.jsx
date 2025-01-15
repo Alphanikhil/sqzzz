@@ -5,7 +5,7 @@ const QRCodeDisplay = () => {
 
     useEffect(() => {
         const wsUrl = import.meta.env.VITE_API_URL.replace('http', 'ws'); // Convert http://localhost:8050 to ws://localhost:8050
-        const ws = new WebSocket(`${wsUrl.replace(/:8050$/, ':8080')}`); // Replace port to match WebSocket server port
+        const ws = new WebSocket(wsUrl); // Use the correct WebSocket URL
 
         ws.onopen = () => {
             console.log('WebSocket connection opened');
