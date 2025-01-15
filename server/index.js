@@ -47,7 +47,7 @@ app.use('/api/order', orderRouter);
 
 // Catch-all route to handle SPA routing
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
 // Connect to the database and start the server
