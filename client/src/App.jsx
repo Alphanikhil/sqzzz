@@ -76,7 +76,7 @@ function App() {
 
   return (
     <GlobalProvider>
-      <RedirectToHome /> {/* Render the redirect component here */}
+ 
       <Header />
       <main className='min-h-[78vh]'>
         <Outlet />

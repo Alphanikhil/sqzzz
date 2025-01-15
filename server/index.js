@@ -14,8 +14,8 @@ import productRouter from './route/product.route.js';
 import cartRouter from './route/cart.route.js';
 import addressRouter from './route/address.route.js';
 import orderRouter from './route/order.route.js';
-import initializeWebSocket from  './utils/websocket.js';
-
+import initializeWebSocket from './utils/websocket.js';
+import path from 'path';
 
 const app = express();
 app.use(cors({
@@ -31,13 +31,11 @@ app.use(helmet({
 
 const PORT = process.env.PORT || 8050;
 
-app.get("/", (request, response) => {
-    // server to client
-    response.json({
-        message: "Server is running on port " + PORT
-    });
-});
+// Serve static files from the frontend build directory
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'client/build')));
 
+// API routes
 app.use('/api/user', userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/file", uploadRouter);
@@ -47,6 +45,12 @@ app.use("/api/cart", cartRouter);
 app.use("/api/address", addressRouter);
 app.use('/api/order', orderRouter);
 
+// Catch-all route to handle SPA routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
+// Connect to the database and start the server
 connectDB().then(() => {
     const server = app.listen(PORT, () => {
         console.log("Server is running on port", PORT);
