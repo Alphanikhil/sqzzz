@@ -1,6 +1,6 @@
 import React from 'react';
 import banner from '../assets/banner.jpg';
-import bannerMobile from '../assets/banner-mobile-BFYswaoU.jpg';
+import bannerMobile from '../assets/banner-mobile.jpg';
 // client/build/assets/banner-mobile-BFYswaoU.jpg
 import { useSelector } from 'react-redux';
 import { valideURLConvert } from '../utils/valideURLConvert';
