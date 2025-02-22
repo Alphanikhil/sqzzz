@@ -58,7 +58,7 @@ productSchema.index({
     description : 'text'
 },{
     name : 10,
-    description : 10
+    description : 5
 })
 
 
