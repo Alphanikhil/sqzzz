@@ -25,12 +25,12 @@ const CardProduct = ({data}) => {
       </div>
       <div className='flex items-center gap-1'>
         <div className='rounded text-xs w-fit p-[1px] px-2 text-green-600 bg-green-50'>
-              10 min 
+              1 Day 
         </div>
         <div>
             {
               Boolean(data.discount) && (
-                <p className='text-green-600 bg-green-100 px-2 w-fit text-xs rounded-full'>{data.discount}% discount</p>
+                <p className='text-green-600 bg-green-100 px-2 w-fit text-xs rounded-full'>{data.discount}% Off</p>
               )
             }
         </div>
