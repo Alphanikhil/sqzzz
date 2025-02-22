@@ -59,6 +59,7 @@ const orderSchema = new mongoose.Schema({
 },{
     timestamps : true
 })
+orderSchema.index({ orderId: "text", "products.product_details.name": "text" });
 
 const OrderModel = mongoose.model('order',orderSchema)
 
