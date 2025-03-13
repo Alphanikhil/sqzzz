@@ -18,46 +18,52 @@ import { initializeWebSocket } from './utils/websocket.js';
 import path from 'path';
 
 const app = express();
-app.use(cors({
-    credentials: true,
-    origin: process.env.FRONTEND_URL
-}));
+const PORT = process.env.PORT || 8050;
+
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
-app.use(helmet({
-    crossOriginResourcePolicy: false
-}));
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
-const PORT = process.env.PORT || 8050;
+// CORS Setup
+app.use(
+    cors({
+        credentials: true,
+        origin: '*',
+    })
+);
 
-// Serve static files from the frontend build directory
+// Serve frontend build files
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'client/build')));
+const buildPath = path.join(__dirname, 'client/build');
+app.use(express.static(buildPath));
 
-// API routes
+// API Routes
 app.use('/api/user', userRouter);
-app.use("/api/category", categoryRouter);
-app.use("/api/file", uploadRouter);
-app.use("/api/subcategory", subCategoryRouter);
-app.use("/api/product", productRouter);
-app.use("/api/cart", cartRouter);
-app.use("/api/address", addressRouter);
+app.use('/api/category', categoryRouter);
+app.use('/api/file', uploadRouter);
+app.use('/api/subcategory', subCategoryRouter);
+app.use('/api/product', productRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/address', addressRouter);
 app.use('/api/order', orderRouter);
 
-// Catch-all route to handle SPA routing
+// Catch-all route to serve React frontend
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build/index.html'));
+    res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 // Connect to the database and start the server
-connectDB().then(() => {
-    const server = app.listen(PORT, () => {
-        console.log("Server is running on port", PORT);
-    });
+connectDB()
+    .then(() => {
+        const server = app.listen(PORT, () => {
+            console.log(`✅ Server running on port ${PORT}`);
+        });
 
-    // Initialize WebSocket server
-    initializeWebSocket(server);
-}).catch(error => {
-    console.error("Failed to connect to the database:", error);
-});
+        // Initialize WebSocket
+        initializeWebSocket(server);
+    })
+    .catch((error) => {
+        console.error('❌ Failed to connect to the database:', error);
+    });
